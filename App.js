@@ -1,20 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import TabNavigation from "./navigation/TabNavigation";
+import { enableScreens } from "react-native-screens";
+import * as Font from "expo-font";
+import AppLoading from "expo-app-loading";
+import { useState } from "react";
+import * as React from "react";
+import { Provider } from "react-redux";
+import { store } from "./store/index";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+enableScreens();
+
+// Loading fonts
+function fetchFonts() {
+  return Font.loadAsync({
+    montserrat: require("./assets/fonts/Montserrat-VariableFont_wght.ttf"),
+    "montserrat-italic": require("./assets/fonts/Montserrat-Italic-VariableFont_wght.ttf"),
+  });
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  if (!fontLoaded) {
+    return (
+      // Make sure all fonts are loaded before app shows screen
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => setFontLoaded(true)}
+        onError={(err) => console.log(err)}
+      />
+    );
+  }
+
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <TabNavigation />
+      </NavigationContainer>
+    </Provider>
+  );
+}
