@@ -15,7 +15,7 @@ const quotesSlice = createSlice({
   reducers: {
     addQuote(state, action) {
       const quoteId = uuidv1();
-      state.quotesList.push(
+      state.quotesList.unshift(
         new QuoteModel(
           quoteId,
           "u1",
@@ -28,7 +28,7 @@ const quotesSlice = createSlice({
     addQuotes(state, action) {
       const quoteId = uuidv1();
       action.payload.forEach((quote) => {
-        state.quotesList.push(
+        state.quotesList.unshift(
           new QuoteModel(quoteId, "u1", quote.q, quote.a, false)
         );
       });

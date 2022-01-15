@@ -32,17 +32,15 @@ const HomeScreen = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (count === 0) {
-      getQuotesApi();
-      setCount(1);
-    }
-    // console.log("try 1: " + quote);
-    if (!isLoading) {
-      dispatch(quotesActions.addQuotes(quote));
-    }
-  }, [isLoading]);
-  // console.log("try 2: " + quote);
+  // useEffect(() => {
+  //   if (count === 0) {
+  //     getQuotesApi();
+  //     setCount(1);
+  //   }
+  //   if (!isLoading) {
+  //     dispatch(quotesActions.addQuotes(quote));
+  //   }
+  // }, [isLoading]);
 
   function addFavQuoteHandler(quoteId) {
     dispatch(quotesActions.addFavQuote(quoteId));
@@ -54,26 +52,26 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      {isLoading ? (
+      {/* {isLoading ? (
         <ActivityIndicator />
-      ) : (
-        <SafeAreaView>
-          <CarouselComp
-            layout="default"
-            layoutCardOffset={15}
-            data={quotesList}
-            sliderWidth={SLIDER_WIDTH}
-            itemWidth={ITEM_WIDTH}
-            renderItem={({ item }) => (
-              <QuoteCard
-                quote={item}
-                addFavQuoteHanlder={addFavQuoteHandler}
-                deleteFavQuoteHandler={deleteFavQuoteHandler}
-              />
-            )}
-          />
-        </SafeAreaView>
-      )}
+      ) : ( */}
+      <SafeAreaView>
+        <CarouselComp
+          layout="default"
+          layoutCardOffset={15}
+          data={quotesList}
+          sliderWidth={SLIDER_WIDTH}
+          itemWidth={ITEM_WIDTH}
+          renderItem={({ item }) => (
+            <QuoteCard
+              quote={item}
+              addFavQuoteHanlder={addFavQuoteHandler}
+              deleteFavQuoteHandler={deleteFavQuoteHandler}
+            />
+          )}
+        />
+      </SafeAreaView>
+      {/* )} */}
     </View>
   );
 };

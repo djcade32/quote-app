@@ -15,6 +15,8 @@ function fetchFonts() {
   return Font.loadAsync({
     montserrat: require("./assets/fonts/Montserrat-VariableFont_wght.ttf"),
     "montserrat-italic": require("./assets/fonts/Montserrat-Italic-VariableFont_wght.ttf"),
+    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 }
 
