@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
-  Alert,
   Text,
 } from "react-native";
 import { Overlay, Button } from "react-native-elements";
@@ -24,9 +23,6 @@ const CreateScreen = () => {
   function createQuoteHandler(data) {
     dispatch(quotesActions.addQuote(data));
     toggleOverlay();
-    // Alert.alert("New Quote", "Sucess!", [
-    //   { text: "OK", onPress: () => console.log("OK Pressed") },
-    // ]);
   }
 
   return (
@@ -64,11 +60,13 @@ const styles = StyleSheet.create({
   textPrimary: {
     marginVertical: 20,
     textAlign: "center",
+    fontFamily: "open-sans-bold",
     fontSize: 20,
   },
   textSecondary: {
     marginBottom: 10,
     textAlign: "center",
+    fontFamily: "open-sans",
     fontSize: 17,
   },
 });

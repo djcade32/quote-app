@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import { Button } from "react-native-elements";
 import { useForm, Controller } from "react-hook-form";
 import Colors from "../constants/Colors";
+import * as Haptics from "expo-haptics";
 
 const NewQuoteForm = (props) => {
   const {
@@ -19,12 +20,17 @@ const NewQuoteForm = (props) => {
   });
 
   function onSubmit(data) {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     reset({
       text: "",
       author: "",
     });
     console.log(data);
     props.createQuoteHandler(data);
+  }
+
+  function onError() {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
   }
 
   return (
@@ -86,7 +92,7 @@ const NewQuoteForm = (props) => {
           )}
         </View>
         <View style={styles.buttonWrapper}>
-          <Button title="Create" onPress={handleSubmit(onSubmit)} />
+          <Button title="Create" onPress={handleSubmit(onSubmit, onError)} />
         </View>
       </View>
     </LinearGradient>

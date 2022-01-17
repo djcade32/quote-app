@@ -7,6 +7,7 @@ import { useState } from "react";
 import * as React from "react";
 import { Provider } from "react-redux";
 import { store } from "./store/index";
+import DrawerNavigation from "./navigation/DrawerNavigation";
 
 enableScreens();
 
@@ -37,7 +38,8 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <TabNavigation />
+        {/* <TabNavigation /> */}
+        <DrawerNavigation />
       </NavigationContainer>
     </Provider>
   );

@@ -6,7 +6,7 @@ export const QUOTES = [
     "u1",
     "Live like no one else so later you can live like no one else.",
     "Dave Ramsey",
-    true
+    false
   ),
   new QuoteModel(
     "q2",
@@ -27,7 +27,7 @@ export const QUOTES = [
     "u1",
     "Move fast and break shit. If you are not breaking shit, you are not moving fast enough",
     "Mark Zuckerberg",
-    true
+    false
   ),
   new QuoteModel("q5", "u1", "Everyday is an opportunity.", "Norman Cade"),
   new QuoteModel(
@@ -63,6 +63,6 @@ export const QUOTES = [
     "u1",
     "Your time is limited, so don't waste it living someone else's life.",
     "Steve Jobs",
-    true
+    false
   ),
 ];

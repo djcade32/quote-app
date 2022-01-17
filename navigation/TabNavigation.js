@@ -43,7 +43,21 @@ const TabNavigation = () => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          headerShown: false,
+          // headerShown: false,
+          headerTitleStyle: {
+            color: "white",
+            fontSize: 20,
+            fontFamily: "open-sans",
+          },
+          headerStyle: {
+            backgroundColor: Colors.backgroundColor,
+            borderTopColor: "transparent",
+            elevation: 0, // for Android
+            shadowOffset: {
+              width: 0,
+              height: 0, // for iOS
+            },
+          },
           tabBarIcon: (tabInfo) => {
             return <Ionicons name="home" size={25} color={tabInfo.color} />;
           },

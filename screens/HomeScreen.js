@@ -1,6 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, ActivityIndicator, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  ActivityIndicator,
+  View,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import Colors from "../constants/Colors";
 import QuoteCard from "../components/QuoteCard";
 import { QUOTES } from "../data/quotes";
@@ -8,11 +15,40 @@ import { FAVQUOTES } from "../data/favQuotes";
 import CarouselComp from "react-native-snap-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { quotesActions } from "../store/quotesSlice";
+// import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const SLIDER_WIDTH = Dimensions.get("window").width + 80;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 const HomeScreen = (props) => {
+  const nav = useNavigation();
+  nav.setOptions({
+    title: "Quotes",
+    headerLeft: () => (
+      <TouchableOpacity
+        style={{ marginLeft: 10 }}
+        onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+      >
+        <Ionicons name="ios-menu" size={30} color={Colors.actionButtonColor} />
+      </TouchableOpacity>
+      // <Button
+      //   onPress={() => alert("This is a button!")}
+      //   title="Info"
+      //   color="#00cc00"
+      // />
+      // <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      //   <Item
+      //     title="Favorite"
+      //     iconName="ios-menu"
+      //     onPress={() => {
+      //       props.navigation.dispatch(DrawerActions.openDrawer());
+      //     }}
+      //   />
+      // </HeaderButtons>
+    ),
+  });
   const [isLoading, setLoading] = useState(true);
   const [quote, setQuote] = useState([]);
   const [count, setCount] = useState(0);
@@ -50,6 +86,10 @@ const HomeScreen = (props) => {
     dispatch(quotesActions.deleteFavQuote(quoteId));
   }
 
+  function deleteQuoteHandler(quoteId) {
+    dispatch(quotesActions.deleteQuote(quoteId));
+  }
+
   return (
     <View style={styles.container}>
       {/* {isLoading ? (
@@ -67,6 +107,7 @@ const HomeScreen = (props) => {
               quote={item}
               addFavQuoteHanlder={addFavQuoteHandler}
               deleteFavQuoteHandler={deleteFavQuoteHandler}
+              deleteQuoteHandler={deleteQuoteHandler}
             />
           )}
         />

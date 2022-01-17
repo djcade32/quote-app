@@ -24,6 +24,7 @@ const quotesSlice = createSlice({
           false
         )
       );
+      console.log("New Quote Added: " + quoteId);
     },
     addQuotes(state, action) {
       const quoteId = uuidv1();
@@ -35,14 +36,37 @@ const quotesSlice = createSlice({
       console.log("New Quotes Added: " + action.payload.length);
     },
     addFavQuote(state, action) {
-      state.favQuotesList.push(action.payload);
-      console.log("Fav Quote List Added To: " + action.payload);
+      state.favQuotesList.unshift(
+        new QuoteModel(
+          action.payload.id,
+          "u1",
+          action.payload.text,
+          action.payload.author,
+          true
+        )
+      );
+      console.log("Fav Quote List Added To: " + action.payload.id);
     },
     deleteFavQuote(state, action) {
       state.favQuotesList = state.favQuotesList.filter(
-        (quoteId) => quoteId !== action.payload
+        (quote) => quote.id !== action.payload.id
+      );
+      state.quotesList.unshift(
+        new QuoteModel(
+          action.payload.id,
+          "u1",
+          action.payload.text,
+          action.payload.author,
+          false
+        )
       );
       console.log("Fav Quote List Deleted: " + action.payload);
+    },
+    deleteQuote(state, action) {
+      state.quotesList = state.quotesList.filter(
+        (quote) => quote.id !== action.payload
+      );
+      console.log("Quote List Deleted: " + action.payload);
     },
   },
 });

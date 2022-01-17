@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import Colors from "../constants/Colors";
 import QuoteCard from "../components/QuoteCard";
@@ -13,6 +13,7 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 const SavedScreen = (props) => {
   const dispatch = useDispatch();
+  const favQuotesList = useSelector((state) => state.quotes.favQuotesList);
 
   function addFavQuoteHandler(quoteId) {
     dispatch(quotesActions.addFavQuote(quoteId));
@@ -21,24 +22,31 @@ const SavedScreen = (props) => {
   function deleteFavQuoteHandler(quoteId) {
     dispatch(quotesActions.deleteFavQuote(quoteId));
   }
-
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        <CarouselComp
-          layout="default"
-          layoutCardOffset={15}
-          data={FAVQUOTES}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
-          renderItem={({ item }) => (
-            <QuoteCard
-              quote={item}
-              addFavQuoteHanlder={addFavQuoteHandler}
-              deleteFavQuoteHandler={deleteFavQuoteHandler}
-            />
-          )}
-        />
+        {favQuotesList.length > 0 ? (
+          <CarouselComp
+            layout="default"
+            layoutCardOffset={15}
+            data={favQuotesList}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            renderItem={({ item }) => (
+              <QuoteCard
+                quote={item}
+                addFavQuoteHanlder={addFavQuoteHandler}
+                deleteFavQuoteHandler={deleteFavQuoteHandler}
+              />
+            )}
+          />
+        ) : (
+          <Text
+            style={{ color: "white", fontFamily: "open-sans", fontSize: 20 }}
+          >
+            You have no saved quotes.
+          </Text>
+        )}
       </SafeAreaView>
     </View>
   );

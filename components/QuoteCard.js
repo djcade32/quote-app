@@ -3,18 +3,19 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Entypo, Ionicons, AntDesign, Octicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Haptics from "expo-haptics";
 
 const QuoteCard = (props) => {
   const currentQuote = props.quote;
   const [isLiked, setIsLiked] = useState(currentQuote.isFavorite);
-
   function handleLikePress() {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (!isLiked) {
-      props.addFavQuoteHanlder(currentQuote.id);
+      props.addFavQuoteHanlder(currentQuote);
+      props.deleteQuoteHandler(currentQuote.id);
     } else {
-      props.deleteFavQuoteHandler(currentQuote.id);
+      props.deleteFavQuoteHandler(currentQuote);
     }
-    setIsLiked(!isLiked);
   }
 
   return (
@@ -75,17 +76,8 @@ export default QuoteCard;
 const styles = StyleSheet.create({
   quoteCard: {
     padding: 20,
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 5,
-    // borderRadius: 10,
-    // backgroundColor: Colors.cardBgColor,
     width: "100%",
-    height: "90%",
+    height: "100%",
     justifyContent: "space-around",
   },
   quotationMark: {
