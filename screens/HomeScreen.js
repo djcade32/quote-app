@@ -33,20 +33,6 @@ const HomeScreen = (props) => {
       >
         <Ionicons name="ios-menu" size={30} color={Colors.actionButtonColor} />
       </TouchableOpacity>
-      // <Button
-      //   onPress={() => alert("This is a button!")}
-      //   title="Info"
-      //   color="#00cc00"
-      // />
-      // <HeaderButtons HeaderButtonComponent={HeaderButton}>
-      //   <Item
-      //     title="Favorite"
-      //     iconName="ios-menu"
-      //     onPress={() => {
-      //       props.navigation.dispatch(DrawerActions.openDrawer());
-      //     }}
-      //   />
-      // </HeaderButtons>
     ),
   });
   const [isLoading, setLoading] = useState(true);

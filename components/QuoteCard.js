@@ -46,16 +46,27 @@ const QuoteCard = (props) => {
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleLikePress}>
-            <LinearGradient
-              colors={["#df673f", Colors.heartColor]}
-              style={styles.heartIconContainer}
+            <View
+              style={{
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+              }}
             >
-              <AntDesign
-                name={isLiked ? "heart" : "hearto"}
-                size={25}
-                color={"white"}
-              />
-            </LinearGradient>
+              <LinearGradient
+                colors={["#df673f", Colors.heartColor]}
+                style={styles.heartIconContainer}
+              >
+                <AntDesign
+                  name={isLiked ? "heart" : "hearto"}
+                  size={25}
+                  color={"white"}
+                />
+              </LinearGradient>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => console.log("Download Clicked")}>
             <Ionicons

@@ -55,7 +55,7 @@ const NewQuoteForm = (props) => {
                 multiline={true}
                 numberOfLines={3}
                 placeholder="Type quote"
-                placeholderTextColor={"grey"}
+                placeholderTextColor={Colors.actionButtonColor}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -79,7 +79,7 @@ const NewQuoteForm = (props) => {
               <TextInput
                 style={[styles.input, errors.author && styles.errorInput]}
                 placeholder="Who said it?"
-                placeholderTextColor={"grey"}
+                placeholderTextColor={Colors.actionButtonColor}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -92,7 +92,14 @@ const NewQuoteForm = (props) => {
           )}
         </View>
         <View style={styles.buttonWrapper}>
-          <Button title="Create" onPress={handleSubmit(onSubmit, onError)} />
+          <Button
+            buttonStyle={{
+              borderRadius: 15,
+              backgroundColor: Colors.actionButtonColor,
+            }}
+            title="SAVE"
+            onPress={handleSubmit(onSubmit, onError)}
+          />
         </View>
       </View>
     </LinearGradient>
@@ -148,13 +155,12 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     borderRadius: 15,
-    overflow: "hidden",
     elevation: 5,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.75,
+    shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
 });
