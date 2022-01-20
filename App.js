@@ -7,10 +7,9 @@ import { useState } from "react";
 import * as React from "react";
 import { Provider } from "react-redux";
 import { store } from "./store/index";
-import DrawerNavigation from "./navigation/DrawerNavigation";
-import SigninScreen from "./screens/SigninScreen";
-import AuthScreen from "./screens/AuthScreen";
+
 import AuthStackNavigation from "./navigation/AuthStackNavigation";
+import DrawerNavigation from "./navigation/DrawerNavigation";
 
 enableScreens();
 
@@ -42,9 +41,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <AuthStackNavigation />
-        {/* <SigninScreen /> */}
-        {/* <TabNavigation /> */}
-        {/* <DrawerNavigation /> */}
+        {/* <DrawerNavigation/> */}
       </NavigationContainer>
     </Provider>
   );

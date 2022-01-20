@@ -24,17 +24,24 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 const HomeScreen = (props) => {
   const nav = useNavigation();
-  nav.setOptions({
-    title: "Quotes",
-    headerLeft: () => (
-      <TouchableOpacity
-        style={{ marginLeft: 10 }}
-        onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
-      >
-        <Ionicons name="ios-menu" size={30} color={Colors.actionButtonColor} />
-      </TouchableOpacity>
-    ),
-  });
+  useEffect(() => {
+    nav.setOptions({
+      title: "Quotes",
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{ marginLeft: 10 }}
+          onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+        >
+          <Ionicons
+            name="ios-menu"
+            size={30}
+            color={Colors.actionButtonColor}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
+
   const [isLoading, setLoading] = useState(true);
   const [quote, setQuote] = useState([]);
   const [count, setCount] = useState(0);

@@ -21,7 +21,7 @@ const CreateScreen = () => {
     setVisible(!visible);
   };
   function createQuoteHandler(data) {
-    dispatch(quotesActions.addQuote(data));
+    dispatch(quotesActions.addFavQuote(data));
     toggleOverlay();
   }
 

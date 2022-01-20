@@ -59,12 +59,13 @@ const NewQuoteForm = (props) => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                selectionColor={"black"}
               />
             )}
             name="text"
           />
           {errors.text && (
-            <Text style={styles.errorMessage}>This is required.</Text>
+            <Text style={styles.errorMessage}>Must enter a quote</Text>
           )}
         </View>
         <View>
@@ -83,12 +84,13 @@ const NewQuoteForm = (props) => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                selectionColor={"black"}
               />
             )}
             name="author"
           />
           {errors.author && (
-            <Text style={styles.errorMessage}>This is required.</Text>
+            <Text style={styles.errorMessage}>Must enter a author</Text>
           )}
         </View>
         <View style={styles.buttonWrapper}>
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
   formTitle: {
     color: "white",
     textAlign: "center",
-    fontFamily: "open-sans-bold",
+    fontFamily: "open-sans",
     fontSize: 30,
   },
   label: {
@@ -135,6 +137,8 @@ const styles = StyleSheet.create({
     padding: 5,
     height: 85,
     width: "100%",
+    borderColor: Colors.backgroundColor,
+    borderWidth: 1,
   },
   input: {
     color: "black",
@@ -144,6 +148,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 5,
     height: 40,
+    borderColor: Colors.actionButtonColor,
+    borderWidth: 1,
   },
   errorInput: {
     borderColor: Colors.heartColor,

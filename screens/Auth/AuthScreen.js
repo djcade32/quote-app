@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Platform } from "react-native";
 import { Button } from "react-native-elements";
 import { Foundation } from "@expo/vector-icons";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
 const AuthScreen = (props) => {
   return (
@@ -29,10 +29,11 @@ const AuthScreen = (props) => {
                 borderRadius: 15,
                 backgroundColor: "transparent",
                 borderColor: "white",
-                borderWidth: 1.5,
+                borderWidth: 1,
               }}
               style={styles.registerButton}
               title={"REGISTER"}
+              onPress={() => props.navigation.navigate("Register Screen")}
             />
           </View>
         </View>
