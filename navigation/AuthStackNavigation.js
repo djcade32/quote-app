@@ -25,12 +25,9 @@ const AuthStackNavigation = () => {
   const auth = getAuth(app);
 
   function fetchFavQuotes() {
-    console.log("Fetching Fav Quotes");
-    console.log("currentUser: " + currentUser.uid);
     getDoc(doc(db, "users", currentUser.uid))
       .then((snapshot) => {
         snapshot.data().favQuotes.forEach((quote) => {
-          console.log(quote);
           dispatch(quotesActions.importToFavQuotes(quote));
         });
       })
@@ -40,7 +37,6 @@ const AuthStackNavigation = () => {
   }
 
   function fetchAllQuotes() {
-    console.log("Fetching Quotes");
     getDocs(collection(db, "quotes"))
       .then((snapshot) => {
         snapshot.docs.forEach((doc) => {
@@ -53,7 +49,6 @@ const AuthStackNavigation = () => {
       .catch((err) => {
         console.log(err.message);
       });
-    console.log("allQuotes: " + allQuotes);
     // dispatch(quotesActions.importToAllQuotes());
   }
 
@@ -66,15 +61,11 @@ const AuthStackNavigation = () => {
   }, [currentUser]);
 
   onAuthStateChanged(auth, (currentUser) => {
-    console.log("Login State: " + isLoggedinState);
     if (currentUser) {
-      console.log("Logged in");
       dispatch(authActions.setCurrentUser(currentUser));
 
       // dispatch(authActions.isLoggedin(true));
-      console.log("Login Changed: " + isLoggedin);
     } else {
-      console.log("Not logged in");
       dispatch(authActions.setCurrentUser(""));
       // dispatch(authActions.isLoggedin(false));
     }

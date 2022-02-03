@@ -96,9 +96,11 @@ const HomeScreen = (props) => {
   }
 
   function deleteFavQuoteHandler(quote) {
-    console.log("delete Fav Quote");
-
-    // dispatch(quotesActions.deleteFavQuote(quote));
+    const data = {
+      quote: quote,
+      userId: userId,
+    };
+    dispatch(quotesActions.deleteFavQuote(data));
   }
 
   function deleteQuoteHandler(quote) {

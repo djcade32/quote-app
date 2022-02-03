@@ -10,20 +10,26 @@ const QuoteCard = (props) => {
   const favQuotesList = useSelector((state) => state.quotes.favQuotesList);
   const currentQuote = props.quote;
   const [isLiked, setIsLiked] = useState(false);
+
   useEffect(() => {
-    if (favQuotesList.find((quote) => quote.id === currentQuote.id)) {
+    if (
+      favQuotesList.find((quote) => {
+        return quote.id === currentQuote.id;
+      })
+    ) {
       console.log("It is in favorites list");
       setIsLiked(true);
     } else {
       setIsLiked(false);
     }
-  }, []);
+  }, [favQuotesList]);
+
   function handleLikePress() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    if (favQuotesList.find((quote) => quote.id === currentQuote.id)) {
-      console.log("It is in favorites list");
+    if (isLiked) {
+      console.log("Removing from favorites list");
       setIsLiked(false);
-      // props.deleteFavQuoteHandler(currentQuote);
+      props.deleteFavQuoteHandler(currentQuote);
     } else {
       setIsLiked(true);
       props.addFavQuoteHandler(currentQuote);

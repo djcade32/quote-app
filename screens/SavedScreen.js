@@ -21,6 +21,7 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 const SavedScreen = (props) => {
   const favQuotesList = useSelector((state) => state.quotes.favQuotesList);
+  const userId = useSelector((state) => state.auth.currentUser.uid);
 
   const dispatch = useDispatch();
   const nav = useNavigation();
@@ -43,15 +44,12 @@ const SavedScreen = (props) => {
     });
   }, []);
 
-  function addFavQuoteHandler(quote) {
-    console.log(quote);
-    // const data = { quote: quote, userId: userId };
-    // console.log("saved screen: " + data);
-    // dispatch(quotesActions.addFavQuote(userId));
-  }
-
-  function deleteFavQuoteHandler(quoteId) {
-    dispatch(quotesActions.deleteFavQuote(quoteId));
+  function deleteFavQuoteHandler(quote) {
+    const data = {
+      quote: quote,
+      userId: userId,
+    };
+    dispatch(quotesActions.deleteFavQuote(data));
   }
   return (
     <View style={styles.container}>
@@ -66,7 +64,6 @@ const SavedScreen = (props) => {
             renderItem={({ item }) => (
               <QuoteCard
                 quote={item}
-                addFavQuoteHandler={addFavQuoteHandler}
                 deleteFavQuoteHandler={deleteFavQuoteHandler}
               />
             )}

@@ -6,10 +6,13 @@ import {
   collection,
   addDoc,
   updateDoc,
+  where,
   doc,
   arrayUnion,
   getDocs,
   deleteDoc,
+  arrayRemove,
+  FieldValue,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -76,7 +79,7 @@ const quotesSlice = createSlice({
         updateDoc(doc(db, "users", action.payload.userId), {
           favQuotes: arrayUnion(data),
         }).then(() => {
-          console.log("Update is Sucess");
+          console.log("Update is Success");
         });
         state.favQuotesList.push(data);
       } catch (error) {
@@ -84,19 +87,19 @@ const quotesSlice = createSlice({
       }
     },
     deleteFavQuote(state, action) {
-      // state.favQuotesList = state.favQuotesList.filter(
-      //   (quote) => quote.id !== action.payload.id
-      // );
-      // state.quotesList.unshift(
-      //   new QuoteModel(
-      //     action.payload.id,
-      //     "u1",
-      //     action.payload.text,
-      //     action.payload.author,
-      //     false
-      //   )
-      // );
-      // console.log("Fav Quote List Deleted: " + action.payload);
+      try {
+        updateDoc(doc(db, "users", action.payload.userId), {
+          favQuotes: arrayRemove(action.payload.quote),
+        }).then(() => {
+          console.log("Remove fav quote is Success");
+        });
+        state.favQuotesList = state.favQuotesList.filter(
+          (quote) => quote.id !== action.payload.quote.id
+        );
+      } catch (error) {
+        console.log("Remove fav quote not Success");
+        console.log(error);
+      }
     },
     deleteQuote(state, action) {
       state.quotesList = state.quotesList.filter(
