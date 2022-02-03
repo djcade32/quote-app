@@ -5,7 +5,7 @@ import { Foundation } from "@expo/vector-icons";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/authSlice";
-import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import app from "../../firebase";
 import FormTextInput from "../FormTextInput";
 import Colors from "../../constants/Colors";
@@ -13,7 +13,6 @@ import * as Haptics from "expo-haptics";
 
 const SigninForm = (props) => {
   const dispatch = useDispatch();
-  const auth = getAuth(app);
 
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
 
@@ -29,13 +28,6 @@ const SigninForm = (props) => {
       password: "",
     },
   });
-
-  // onAuthStateChanged(auth, (currentUser) => {
-  //   if (currentUser) {
-  //     dispatch(authActions.setCurrentUser(currentUser));
-  //     // dispatch(authActions.isLoggedin(true));
-  //   }
-  // });
 
   function onSubmit(data) {
     dispatch(

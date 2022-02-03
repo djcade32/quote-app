@@ -9,17 +9,8 @@ import RegisterScreen from "../screens/Auth/RegisterScreen";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import app from "../firebase";
 import { quotesActions } from "../store/quotesSlice";
-import {
-  collection,
-  addDoc,
-  updateDoc,
-  doc,
-  arrayUnion,
-  getDocs,
-  getDoc,
-} from "firebase/firestore";
+import { collection, doc, getDocs, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import darkColors from "react-native-elements/dist/config/colorsDark";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,13 +38,6 @@ const AuthStackNavigation = () => {
         console.log(err.message);
       });
   }
-
-  // useEffect(() => {
-  //   // fetchFavQuotes();
-  //   console.log("allQuotes: " + allQuotes);
-
-  //   console.log("Login 2nd: " + isLoggedin);
-  // }, [isLoggedin]);
 
   function fetchAllQuotes() {
     console.log("Fetching Quotes");

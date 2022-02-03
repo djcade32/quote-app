@@ -125,7 +125,6 @@ const HomeScreen = (props) => {
               addFavQuoteHandler={addFavQuoteHandler}
               deleteFavQuoteHandler={deleteFavQuoteHandler}
               deleteQuoteHandler={deleteQuoteHandler}
-              initialSaveState={false}
             />
           )}
         />
