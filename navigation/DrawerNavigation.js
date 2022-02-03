@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../store/authSlice";
 import TabNavigation from "./TabNavigation";
 import Colors from "../constants/Colors";
+import { quotesActions } from "../store/quotesSlice";
 
 const DrawerNavigation = () => {
   const Drawer = createDrawerNavigator();
@@ -26,6 +27,7 @@ const DrawerNavigation = () => {
               label="Logout"
               labelStyle={{ fontFamily: "open-sans", color: "black" }}
               onPress={() => {
+                dispatch(quotesActions.resetInitialState());
                 dispatch(authActions.signOut());
               }}
             />

@@ -16,6 +16,7 @@ import Colors from "../constants/Colors";
 import { quotesActions } from "../store/quotesSlice";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { v1 as uuidv1 } from "uuid";
 
 const CreateScreen = (props) => {
   const [visible, setVisible] = useState(false);
@@ -44,8 +45,14 @@ const CreateScreen = (props) => {
     setVisible(!visible);
   };
   function createQuoteHandler(quote) {
-    const data = { quote: quote, userId: userId };
-    // console.log("saved screen: " + data.quote.text);
+    const quoteId = uuidv1();
+
+    const newQuote = {
+      text: quote.text,
+      author: quote.author,
+      id: quoteId,
+    };
+    const data = { quote: newQuote, userId: userId };
     dispatch(quotesActions.addFavQuote(data));
     toggleOverlay();
   }

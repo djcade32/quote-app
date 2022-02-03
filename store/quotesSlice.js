@@ -6,13 +6,9 @@ import {
   collection,
   addDoc,
   updateDoc,
-  where,
   doc,
   arrayUnion,
-  getDocs,
-  deleteDoc,
   arrayRemove,
-  FieldValue,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -36,29 +32,10 @@ const quotesSlice = createSlice({
       }
     },
     importToAllQuotes(state, action) {
-      state.quotesList.push(
-        action.payload
-        // new QuoteModel(
-        //   quoteId,
-        //   "u1",
-        //   action.payload.text,
-        //   action.payload.author,
-        //   false
-        // )
-      );
-      // console.log("New Quote Added: " + quoteId);
+      state.quotesList.push(action.payload);
     },
     importToFavQuotes(state, action) {
-      state.favQuotesList.push(
-        action.payload
-        // new QuoteModel(
-        //   quoteId,
-        //   "u1",
-        //   action.payload.text,
-        //   action.payload.author,
-        //   false
-        // )
-      );
+      state.favQuotesList.push(action.payload);
     },
     addQuotes(state, action) {
       // action.payload.forEach((quote) => {
@@ -78,9 +55,7 @@ const quotesSlice = createSlice({
         };
         updateDoc(doc(db, "users", action.payload.userId), {
           favQuotes: arrayUnion(data),
-        }).then(() => {
-          console.log("Update is Success");
-        });
+        }).then(() => {});
         state.favQuotesList.push(data);
       } catch (error) {
         console.log(error);
@@ -90,14 +65,11 @@ const quotesSlice = createSlice({
       try {
         updateDoc(doc(db, "users", action.payload.userId), {
           favQuotes: arrayRemove(action.payload.quote),
-        }).then(() => {
-          console.log("Remove fav quote is Success");
-        });
+        }).then(() => {});
         state.favQuotesList = state.favQuotesList.filter(
           (quote) => quote.id !== action.payload.quote.id
         );
       } catch (error) {
-        console.log("Remove fav quote not Success");
         console.log(error);
       }
     },
@@ -106,6 +78,10 @@ const quotesSlice = createSlice({
         (quote) => quote.id !== action.payload.id
       );
       console.log("Quote List Deleted: " + action.payload);
+    },
+    resetInitialState(state) {
+      state.quotesList = [];
+      state.favQuotesList = [];
     },
   },
 });

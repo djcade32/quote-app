@@ -17,7 +17,6 @@ const QuoteCard = (props) => {
         return quote.id === currentQuote.id;
       })
     ) {
-      console.log("It is in favorites list");
       setIsLiked(true);
     } else {
       setIsLiked(false);
@@ -27,7 +26,6 @@ const QuoteCard = (props) => {
   function handleLikePress() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (isLiked) {
-      console.log("Removing from favorites list");
       setIsLiked(false);
       props.deleteFavQuoteHandler(currentQuote);
     } else {

@@ -54,6 +54,7 @@ const AuthStackNavigation = () => {
 
   useEffect(() => {
     if (currentUser) {
+      console.log("Fetching Quotes");
       fetchFavQuotes();
       fetchAllQuotes();
       setQuotesFetched(true);
