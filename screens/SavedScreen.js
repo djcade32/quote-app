@@ -1,22 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import Colors from "../constants/Colors";
 import QuoteCard from "../components/QuoteCard";
-import { FAVQUOTES } from "../data/favQuotes";
 import CarouselComp from "react-native-snap-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { quotesActions } from "../store/quotesSlice";
+import { authActions } from "../store/authSlice";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { collection, addDoc, getDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const SLIDER_WIDTH = Dimensions.get("window").width + 80;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 const SavedScreen = (props) => {
-  const dispatch = useDispatch();
   const favQuotesList = useSelector((state) => state.quotes.favQuotesList);
+  const userId = useSelector((state) => state.auth.currentUser.uid);
+  const [count, setCount] = useState(0);
+  const [isLoading, setLoading] = useState(true);
+  const [favQuotes, setFavQuotes] = useState([]);
+  const dispatch = useDispatch();
+  const nav = useNavigation();
 
-  function addFavQuoteHandler(quoteId) {
-    dispatch(quotesActions.addFavQuote(quoteId));
+  useEffect(() => {
+    nav.setOptions({
+      title: "Saved Quotes",
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{ marginLeft: 10 }}
+          onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+        >
+          <Ionicons
+            name="ios-menu"
+            size={30}
+            color={Colors.actionButtonColor}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
+
+  function addFavQuoteHandler(quote) {
+    console.log(quote);
+    // const data = { quote: quote, userId: userId };
+    // console.log("saved screen: " + data);
+    // dispatch(quotesActions.addFavQuote(userId));
   }
 
   function deleteFavQuoteHandler(quoteId) {
@@ -24,6 +61,9 @@ const SavedScreen = (props) => {
   }
   return (
     <View style={styles.container}>
+      {/* {isLoading ? (
+        <ActivityIndicator />
+      ) : ( */}
       <SafeAreaView>
         {favQuotesList.length > 0 ? (
           <CarouselComp
@@ -35,8 +75,9 @@ const SavedScreen = (props) => {
             renderItem={({ item }) => (
               <QuoteCard
                 quote={item}
-                addFavQuoteHanlder={addFavQuoteHandler}
+                addFavQuoteHandler={addFavQuoteHandler}
                 deleteFavQuoteHandler={deleteFavQuoteHandler}
+                initialSaveState={true}
               />
             )}
           />
@@ -48,6 +89,7 @@ const SavedScreen = (props) => {
           </Text>
         )}
       </SafeAreaView>
+      {/* )} */}
     </View>
   );
 };

@@ -3,16 +3,22 @@ import { StyleSheet, Text, View, Platform } from "react-native";
 import { Button } from "react-native-elements";
 import { Foundation } from "@expo/vector-icons";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/authSlice";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import app from "../../firebase";
 import FormTextInput from "../FormTextInput";
 import Colors from "../../constants/Colors";
 import * as Haptics from "expo-haptics";
 
 const SigninForm = (props) => {
   const dispatch = useDispatch();
+  const auth = getAuth(app);
+
+  const isLoggedin = useSelector((state) => state.auth.isLoggedin);
 
   const {
+    trigger,
     reset,
     control,
     handleSubmit,
@@ -24,17 +30,22 @@ const SigninForm = (props) => {
     },
   });
 
+  // onAuthStateChanged(auth, (currentUser) => {
+  //   if (currentUser) {
+  //     dispatch(authActions.setCurrentUser(currentUser));
+  //     // dispatch(authActions.isLoggedin(true));
+  //   }
+  // });
+
   function onSubmit(data) {
-    reset({
-      email: "",
-      password: "",
-    });
-    dispatch(authActions.login(data));
-    if (dispatch(authActions.isLoggedIn())) {
-      props.navigation.replace("Home Screen");
-    } else {
-      console.log("Incorrect Credentials");
-    }
+    dispatch(
+      authActions.login({
+        data: data,
+        triggerError: trigger,
+        triggerReset: reset,
+      })
+    );
+    console.log(isLoggedin);
   }
 
   function onError() {

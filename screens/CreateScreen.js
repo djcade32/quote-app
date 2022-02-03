@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Text,
 } from "react-native";
 import { Overlay, Button } from "react-native-elements";
@@ -13,14 +14,38 @@ import { Overlay, Button } from "react-native-elements";
 import NewQuoteForm from "../components/NewQuoteForm";
 import Colors from "../constants/Colors";
 import { quotesActions } from "../store/quotesSlice";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
-const CreateScreen = () => {
+const CreateScreen = (props) => {
   const [visible, setVisible] = useState(false);
+  const userId = useSelector((state) => state.auth.currentUser.uid);
   const dispatch = useDispatch();
+  const nav = useNavigation();
+
+  useEffect(() => {
+    nav.setOptions({
+      title: "Create Quote",
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{ marginLeft: 10 }}
+          onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+        >
+          <Ionicons
+            name="ios-menu"
+            size={30}
+            color={Colors.actionButtonColor}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-  function createQuoteHandler(data) {
+  function createQuoteHandler(quote) {
+    const data = { quote: quote, userId: userId };
+    // console.log("saved screen: " + data.quote.text);
     dispatch(quotesActions.addFavQuote(data));
     toggleOverlay();
   }

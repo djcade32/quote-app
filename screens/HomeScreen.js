@@ -15,7 +15,9 @@ import { FAVQUOTES } from "../data/favQuotes";
 import CarouselComp from "react-native-snap-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { quotesActions } from "../store/quotesSlice";
-// import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { authActions } from "../store/authSlice";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -24,6 +26,7 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 const HomeScreen = (props) => {
   const nav = useNavigation();
+
   useEffect(() => {
     nav.setOptions({
       title: "Quotes",
@@ -43,9 +46,13 @@ const HomeScreen = (props) => {
   }, []);
 
   const [isLoading, setLoading] = useState(true);
+  const [quotesFetched, setQuotesFetched] = useState(false);
   const [quote, setQuote] = useState([]);
   const [count, setCount] = useState(0);
+  const [allQuotes, setAllQuotes] = useState([]);
+
   const quotesList = useSelector((state) => state.quotes.quotesList);
+  const userId = useSelector((state) => state.auth.currentUser.uid);
   const dispatch = useDispatch();
 
   const getQuotesApi = async () => {
@@ -62,6 +69,13 @@ const HomeScreen = (props) => {
   };
 
   // useEffect(() => {
+  //   if (!quotesFetched) {
+  //     fetchAllQuotes();
+  //     setQuotesFetched(true);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
   //   if (count === 0) {
   //     getQuotesApi();
   //     setCount(1);
@@ -71,16 +85,26 @@ const HomeScreen = (props) => {
   //   }
   // }, [isLoading]);
 
-  function addFavQuoteHandler(quoteId) {
-    dispatch(quotesActions.addFavQuote(quoteId));
+  function addFavQuoteHandler(quote) {
+    console.log("added Fav Quote");
+    const data = {
+      quote: quote,
+      userId: userId,
+    };
+
+    dispatch(quotesActions.addFavQuote(data));
   }
 
-  function deleteFavQuoteHandler(quoteId) {
-    dispatch(quotesActions.deleteFavQuote(quoteId));
+  function deleteFavQuoteHandler(quote) {
+    console.log("delete Fav Quote");
+
+    // dispatch(quotesActions.deleteFavQuote(quote));
   }
 
-  function deleteQuoteHandler(quoteId) {
-    dispatch(quotesActions.deleteQuote(quoteId));
+  function deleteQuoteHandler(quote) {
+    console.log("delete Quote");
+
+    dispatch(quotesActions.deleteQuote(quote));
   }
 
   return (
@@ -98,9 +122,10 @@ const HomeScreen = (props) => {
           renderItem={({ item }) => (
             <QuoteCard
               quote={item}
-              addFavQuoteHanlder={addFavQuoteHandler}
+              addFavQuoteHandler={addFavQuoteHandler}
               deleteFavQuoteHandler={deleteFavQuoteHandler}
               deleteQuoteHandler={deleteQuoteHandler}
+              initialSaveState={false}
             />
           )}
         />

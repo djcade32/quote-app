@@ -1,22 +1,61 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Entypo, Ionicons, AntDesign, Octicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { StyleSheet, Text, View, TouchableOpacity, Share } from "react-native";
+import { Entypo, AntDesign, Octicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 
 const QuoteCard = (props) => {
+  const favQuotesList = useSelector((state) => state.quotes.favQuotesList);
   const currentQuote = props.quote;
-  const [isLiked, setIsLiked] = useState(currentQuote.isFavorite);
+  const [isLiked, setIsLiked] = useState(false);
+  useEffect(() => {
+    if (favQuotesList.find((quote) => quote.id === currentQuote.id)) {
+      console.log("It is in favorites list");
+      setIsLiked(true);
+    } else {
+      setIsLiked(false);
+    }
+  }, []);
   function handleLikePress() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    if (!isLiked) {
-      props.addFavQuoteHanlder(currentQuote);
-      props.deleteQuoteHandler(currentQuote.id);
+    if (favQuotesList.find((quote) => quote.id === currentQuote.id)) {
+      console.log("It is in favorites list");
+      setIsLiked(false);
+      // props.deleteFavQuoteHandler(currentQuote);
     } else {
-      props.deleteFavQuoteHandler(currentQuote);
+      setIsLiked(true);
+      props.addFavQuoteHandler(currentQuote);
     }
   }
+
+  const shareHandler = async () => {
+    const message = '"' + currentQuote.text + '"\n\n-' + currentQuote.author;
+    try {
+      await Share.share({
+        message: message,
+        // const result = await Share.share({
+        //   message:
+        //     'React Native | A framework for building native apps using React',
+      });
+      // if (result.action === Share.sharedAction) {
+      //   if (result.activityType) {
+      //     // shared with activity type of result.activityType
+      //   } else {
+      //     // shared
+      //   }
+      // } else if (result.action === Share.dismissedAction) {
+      //   // dismissed
+      // }
+    } catch (error) {
+      if (Share.dismissedAction) {
+        console.log("Dissmissed!!!!");
+      } else {
+        alert(error.message);
+      }
+    }
+  };
 
   return (
     <LinearGradient
@@ -37,15 +76,10 @@ const QuoteCard = (props) => {
           <Text style={styles.quoteAuthor}>- {currentQuote.author}</Text>
         </View>
         <View style={styles.actionContainer}>
-          <TouchableOpacity onPress={() => console.log("Share Clicked")}>
-            <Entypo
-              style={{ margin: 15 }}
-              name="share"
-              size={25}
-              color={Colors.actionButtonColor}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleLikePress}>
+          <TouchableOpacity
+            onPress={handleLikePress}
+            style={{ marginRight: 10 }}
+          >
             <View
               style={{
                 shadowOffset: {
@@ -68,13 +102,24 @@ const QuoteCard = (props) => {
               </LinearGradient>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("Download Clicked")}>
-            <Ionicons
-              style={{ margin: 15 }}
-              name="ios-cloud-download"
-              size={25}
-              color={Colors.actionButtonColor}
-            />
+          <TouchableOpacity onPress={shareHandler}>
+            <View
+              style={{
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+              }}
+            >
+              {/* <LinearGradient
+                colors={["#df673f", Colors.heartColor]}
+                style={styles.heartIconContainer}
+              > */}
+              <Entypo name="share" size={25} color={Colors.actionButtonColor} />
+              {/* </LinearGradient> */}
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -109,7 +154,7 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
   },
   heartIconContainer: {

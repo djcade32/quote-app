@@ -25,7 +25,6 @@ const NewQuoteForm = (props) => {
       text: "",
       author: "",
     });
-    console.log(data);
     props.createQuoteHandler(data);
   }
 
@@ -41,7 +40,6 @@ const NewQuoteForm = (props) => {
       }}
     >
       <View style={styles.formContainer}>
-        <Text style={styles.formTitle}>Create New Quote</Text>
         <View>
           <Text style={styles.label}>Quote</Text>
           <Controller
@@ -90,7 +88,7 @@ const NewQuoteForm = (props) => {
             name="author"
           />
           {errors.author && (
-            <Text style={styles.errorMessage}>Must enter a author</Text>
+            <Text style={styles.errorMessage}>Must enter an author</Text>
           )}
         </View>
         <View style={styles.buttonWrapper}>

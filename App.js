@@ -41,7 +41,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <AuthStackNavigation />
-        {/* <DrawerNavigation/> */}
+        {/* <DrawerNavigation /> */}
       </NavigationContainer>
     </Provider>
   );

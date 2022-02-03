@@ -1,24 +1,116 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../store/authSlice";
 import AuthScreen from "../screens/Auth/AuthScreen";
 import SigninScreen from "../screens/Auth/SigninScreen";
 import DrawerNavigation from "./DrawerNavigation";
 import RegisterScreen from "../screens/Auth/RegisterScreen";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import app from "../firebase";
+import { quotesActions } from "../store/quotesSlice";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  arrayUnion,
+  getDocs,
+  getDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
+import darkColors from "react-native-elements/dist/config/colorsDark";
 
 const Stack = createNativeStackNavigator();
 
 const AuthStackNavigation = () => {
+  const [allQuotes, setAllQuotes] = useState([]);
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  const isLoggedin = useSelector((state) => state.auth.isLoggedin);
+  const [isLoggedinState, setIsLoggedinState] = useState(isLoggedin);
+  const [quotesFetched, setQuotesFetched] = useState(false);
+
+  const dispatch = useDispatch();
+  const auth = getAuth(app);
+
+  function fetchFavQuotes() {
+    console.log("Fetching Fav Quotes");
+    console.log("currentUser: " + currentUser.uid);
+    getDoc(doc(db, "users", currentUser.uid))
+      .then((snapshot) => {
+        snapshot.data().favQuotes.forEach((quote) => {
+          console.log(quote);
+          dispatch(quotesActions.importToFavQuotes(quote));
+        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
+  // useEffect(() => {
+  //   // fetchFavQuotes();
+  //   console.log("allQuotes: " + allQuotes);
+
+  //   console.log("Login 2nd: " + isLoggedin);
+  // }, [isLoggedin]);
+
+  function fetchAllQuotes() {
+    console.log("Fetching Quotes");
+    getDocs(collection(db, "quotes"))
+      .then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          setAllQuotes((prevState) => [...prevState, doc.data()]);
+          dispatch(
+            quotesActions.importToAllQuotes({ ...doc.data(), id: doc.id })
+          );
+        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    console.log("allQuotes: " + allQuotes);
+    // dispatch(quotesActions.importToAllQuotes());
+  }
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchFavQuotes();
+      fetchAllQuotes();
+      setQuotesFetched(true);
+    }
+  }, [currentUser]);
+
+  onAuthStateChanged(auth, (currentUser) => {
+    console.log("Login State: " + isLoggedinState);
+    if (currentUser) {
+      console.log("Logged in");
+      dispatch(authActions.setCurrentUser(currentUser));
+
+      // dispatch(authActions.isLoggedin(true));
+      console.log("Login Changed: " + isLoggedin);
+    } else {
+      console.log("Not logged in");
+      dispatch(authActions.setCurrentUser(""));
+      // dispatch(authActions.isLoggedin(false));
+    }
+  });
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Auth Screen" component={AuthScreen} />
-      <Stack.Screen name="Signin Screen" component={SigninScreen} />
-      <Stack.Screen name="Home Screen" component={DrawerNavigation} />
-      <Stack.Screen name="Register Screen" component={RegisterScreen} />
+      {currentUser ? (
+        <Stack.Screen name="Home Screen" component={DrawerNavigation} />
+      ) : (
+        <React.Fragment>
+          <Stack.Screen name="Auth Screen" component={AuthScreen} />
+          <Stack.Screen name="Signin Screen" component={SigninScreen} />
+          <Stack.Screen name="Register Screen" component={RegisterScreen} />
+        </React.Fragment>
+      )}
     </Stack.Navigator>
   );
 };

@@ -7,6 +7,20 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
 const Tab = createBottomTabNavigator();
+const headerTitleStyle = {
+  color: "white",
+  fontSize: 20,
+  fontFamily: "open-sans",
+};
+const tabBarStyle = {
+  backgroundColor: Colors.backgroundColor,
+  borderTopColor: "transparent",
+  elevation: 0, // for Android
+  shadowOffset: {
+    width: 0,
+    height: 0, // for iOS
+  },
+};
 
 const TabNavigation = () => {
   return (
@@ -18,46 +32,26 @@ const TabNavigation = () => {
         tabBarIconStyle: {
           marginBottom: 20,
         },
-        tabBarStyle: {
-          backgroundColor: Colors.backgroundColor,
-          borderTopColor: "transparent",
-          elevation: 0, // for Android
-          shadowOffset: {
-            width: 0,
-            height: 0, // for iOS
-          },
-        },
+        tabBarStyle: tabBarStyle,
       }}
     >
       <Tab.Screen
         name="CreateScreen"
         component={CreateScreen}
         options={{
-          headerShown: false,
           tabBarIcon: (tabInfo) => {
             return <Ionicons name="create" size={25} color={tabInfo.color} />;
           },
+          headerTitleStyle: headerTitleStyle,
+          headerStyle: tabBarStyle,
         }}
       />
       <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          // headerShown: false,
-          headerTitleStyle: {
-            color: "white",
-            fontSize: 20,
-            fontFamily: "open-sans",
-          },
-          headerStyle: {
-            backgroundColor: Colors.backgroundColor,
-            borderTopColor: "transparent",
-            elevation: 0, // for Android
-            shadowOffset: {
-              width: 0,
-              height: 0, // for iOS
-            },
-          },
+          headerTitleStyle: headerTitleStyle,
+          headerStyle: tabBarStyle,
           tabBarIcon: (tabInfo) => {
             return <Ionicons name="home" size={25} color={tabInfo.color} />;
           },
@@ -67,7 +61,8 @@ const TabNavigation = () => {
         name="SavedScreen"
         component={SavedScreen}
         options={{
-          headerShown: false,
+          headerTitleStyle: headerTitleStyle,
+          headerStyle: tabBarStyle,
           tabBarIcon: (tabInfo) => {
             return <AntDesign name="heart" size={25} color={tabInfo.color} />;
           },

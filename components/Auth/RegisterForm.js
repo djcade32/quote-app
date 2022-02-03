@@ -34,7 +34,7 @@ const RegisterForm = (props) => {
     });
     console.log(data);
     dispatch(authActions.createNewUser(data));
-    props.navigation.replace("Signin Screen");
+    dispatch(authActions.isLoggedin());
   }
 
   function onError() {
@@ -76,7 +76,9 @@ const RegisterForm = (props) => {
           required: true,
           pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
         }}
-        errorMessage={"Must have at least one capital letter"}
+        errorMessage={
+          "Must be at least 6 charachters and contian lowercase letters, capital letters, and numbers"
+        }
       />
       <FormTextInput
         labelName="Re-enter Password"

@@ -1,16 +1,37 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import FilterScreen from "../screens/FilterScreen";
+import { StyleSheet } from "react-native";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/authSlice";
 import TabNavigation from "./TabNavigation";
 import Colors from "../constants/Colors";
 
 const DrawerNavigation = () => {
   const Drawer = createDrawerNavigator();
+  const dispatch = useDispatch();
 
   return (
     <Drawer.Navigator
       initialRouteName="TabNavigation"
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem
+              label="Logout"
+              labelStyle={{ fontFamily: "open-sans", color: "black" }}
+              onPress={() => {
+                dispatch(authActions.signOut());
+              }}
+            />
+          </DrawerContentScrollView>
+        );
+      }}
       screenOptions={{
         headerShown: false,
         drawerActiveTintColor: Colors.backgroundColor,
@@ -25,25 +46,11 @@ const DrawerNavigation = () => {
         options={{
           drawerLabel: "Home",
           drawerLabelStyle: {
+            fontFamily: "open-sans",
             color: "black",
           },
         }}
       />
-      <Drawer.Screen
-        name="FilterScreen"
-        component={FilterScreen}
-        options={{
-          drawerLabel: "Filters",
-          drawerLabelStyle: {
-            color: "black",
-          },
-        }}
-      />
-      {/* <Drawer.Screen
-        name="Filters"
-        component={FiltersScreen}
-        options={{ headerShown: true }}
-      /> */}
     </Drawer.Navigator>
   );
 };
